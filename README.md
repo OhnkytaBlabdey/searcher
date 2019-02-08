@@ -1,2 +1,2 @@
 # searcher
-triverse a tree
+traverse a tree
