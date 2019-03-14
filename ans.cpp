@@ -65,6 +65,17 @@ namespace storage{
 		return _count[p];
 	}
 	
+	int select_son(int p)
+	{
+		int ct=_count[p];
+		if(ct<1){
+			cerr<<"Error : no available node to select. "<<endl;
+			abort();
+		}
+		int res=son[p];
+		return res;
+	}
+	
 };
 FILE *fin=NULL;
 FILE *fout=NULL;
@@ -129,6 +140,21 @@ void release()
 
 int main()
 {
-	
+	int now=0;
+	int ct;
+	while(cin>>ct && ct){
+		if( storage::son_count(now)==0 ){
+			storage::add(now, ct);
+		}else{
+			if( storage::son_count(now)!=ct ){
+				cerr<<"Error : node count not fit to former data. "<<endl;
+				abort();
+			}
+		}
+		
+		now=storage::select_son(now);
+		cout<<now<<endl;
+	}
+	storage::disable(now);
 	return 0;
 }
