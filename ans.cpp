@@ -73,7 +73,7 @@ namespace storage{
 		int s;
 		_availables_count=0;
 		for(int i=0;i<_count[p];++i){
-			s=sons[p]+i;
+			s=son[p]+i;
 			if(able[s]) _availables[_availables_count++]=s;
 		}
 		return _availables_count;
@@ -172,11 +172,11 @@ int main()
 				abort();
 			}
 		}
-		++val[now];
+		++storage::val[now];
 		now=storage::select_son(now);
 		cout<<now<<endl;
 	}
-	++val[now];
+	++storage::val[now];
 	storage::disable(now);
 	release();
 	return 0;
