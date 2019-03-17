@@ -85,7 +85,7 @@ namespace storage{
 			cerr<<"Error : no available node to select. "<<endl;
 			abort();
 		}
-		++val[p];
+		// ++val[p];
 		int res=_availables[0];
 		int s;
 		for(int i=0;i<_availables_count;++i){
@@ -159,6 +159,8 @@ void release()
 
 int main()
 {
+	init();
+	srand(0);
 	int now=0;
 	int ct;
 	while(cin>>ct && ct){
@@ -170,10 +172,12 @@ int main()
 				abort();
 			}
 		}
-		
+		++val[now];
 		now=storage::select_son(now);
 		cout<<now<<endl;
 	}
+	++val[now];
 	storage::disable(now);
+	release();
 	return 0;
 }
