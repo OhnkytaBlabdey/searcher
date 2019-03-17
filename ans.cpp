@@ -86,13 +86,16 @@ namespace storage{
 			cerr<<"Error : no available node to select. "<<endl;
 			abort();
 		}
-		// ++val[p];
-		int res=_availables[0];
+		int res;
+		
+		res=rand()%_availables_count;
+		/* /// minimize val[s]
+		res=_availables[0];
 		int s;
 		for(int i=0;i<_availables_count;++i){
 			s=_availables[i];
 			if(val[s]>val[res]) res=s;
-		}
+		} */
 		return res-son[p]+1;
 	}
 	
