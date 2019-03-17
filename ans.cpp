@@ -4,7 +4,7 @@
 #include <ctime>
 #include <cstring>
 
-
+#define lll
 using namespace std;
 const int maxn=0x800;
 
@@ -73,9 +73,13 @@ namespace storage{
 			s=son[p]+i;
 			if(able[s]) _availables[_availables_count++]=s;
 		}
-		// cerr <<"available count"<<" "<<_availables_count<<endl;
-		// for(int i=0;i<_availables_count;++i) cerr<<" "<<_availables[i];
-		// cerr<<endl;
+	#ifdef lll
+		{
+		cerr <<"available count"<<" "<<_availables_count<<endl;
+		for(int i=0;i<_availables_count;++i) cerr<<" "<<_availables[i];
+		cerr<<endl;
+		}
+	#endif
 		return _availables_count;
 	}
 	
@@ -88,7 +92,7 @@ namespace storage{
 		}
 		int res;
 		
-		res=rand()%_availables_count;
+		res=_availables[(rand()+_availables_count)%_availables_count];
 		/* /// minimize val[s]
 		res=_availables[0];
 		int s;
@@ -170,7 +174,9 @@ int main()
 	while(cin>>ct && ct){
 		if( storage::son_count(now)==0 ){
 			storage::add(now, ct);
-			// cerr <<"add "<<" "<<now<<" "<<ct<<endl;
+		#ifdef lll
+			cerr <<"add "<<" "<<now<<" "<<ct<<endl;
+		#endif
 		}else{
 			if( storage::son_count(now)!=ct ){
 				cerr<<"Error : node count not fit to former data. "<<endl;
@@ -181,6 +187,9 @@ int main()
 		++storage::val[now];
 		chs=storage::select_son(now);
 		cout<<chs<<endl;
+	#ifdef lll
+		cerr <<now<<", "<<chs<<endl;
+	#endif
 		fprintf(flog," %3d",chs);
 		now=storage::getson(now, chs);
 	}
