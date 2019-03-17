@@ -6,7 +6,7 @@
 
 
 using namespace std;
-const int maxn=0x80000;
+const int maxn=0x800;
 
 namespace storage{
 	int pa[maxn];// parent node
@@ -36,12 +36,13 @@ namespace storage{
 		_count[p]=ct;
 		for(int i=0;i<ct;++i) {
 			pa[count]=p;
-			able[count++]=0;
+			able[count++]=-1;
 		}
 	}
 	
 	inline void disable(int x)
 	{
+		able[x]=0;
 		int p=pa[x];
 		if(p==0) return;
 		if(able[x]==1 || able[x]==0){
@@ -92,7 +93,11 @@ namespace storage{
 			s=_availables[i];
 			if(val[s]>val[res]) res=s;
 		}
-		return res;
+		int ind=0;
+		for(;ind<_availables_count;++ind){
+			if(_availables[ind]==res) break;
+		}
+		return ind+1;
 	}
 	
 };
@@ -143,7 +148,7 @@ void init()
 	if(fin!=NULL)
 		load();
 	else
-		storage::count=1;
+		storage::count=1;// root node
 }
 void release()
 {
@@ -175,6 +180,7 @@ int main()
 		++storage::val[now];
 		now=storage::select_son(now);
 		cout<<now<<endl;
+		fprintf(flog," %3d",now);
 	}
 	++storage::val[now];
 	storage::disable(now);
