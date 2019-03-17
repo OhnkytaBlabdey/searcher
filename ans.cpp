@@ -21,10 +21,10 @@ namespace storage{
 
 	inline void init()
 	{
-		memset(pa,0,maxn*sizeof(int));
+		memset(pa,-1,maxn*sizeof(int));
 		memset(son,0,maxn*sizeof(int));
 		memset(val,0,maxn*sizeof(int));
-		memset(able,0,maxn*sizeof(int));
+		memset(able,-1,maxn*sizeof(int));
 		memset(_count,0,maxn*sizeof(int));
 		// able[0]=1;
 	}
@@ -77,9 +77,13 @@ namespace storage{
 			s=son[p]+i;
 			if(able[s]) _availables[_availables_count++]=s;
 		}
+		cerr <<"available count"<<" "<<_availables_count<<endl;
+		for(int i=0;i<_availables_count;++i) cerr<<" "<<_availables[i];
+		cerr<<endl;
 		return _availables_count;
 	}
 	
+	/// return an index (from 1 on)
 	int select_son(int p)
 	{
 		if(!get_available_sons(p)){
@@ -93,11 +97,7 @@ namespace storage{
 			s=_availables[i];
 			if(val[s]>val[res]) res=s;
 		}
-		int ind=0;
-		for(;ind<_availables_count;++ind){
-			if(_availables[ind]==res) break;
-		}
-		return ind+1;
+		return res-son[p]+1;
 	}
 	
 };
@@ -122,21 +122,21 @@ void load()
 {
 	const int m=maxn-1;
 	Read(storage::count);
-	for(int i=1;i<=m;i++) Read(storage::pa[i]);
-	for(int i=1;i<=m;i++) Read(storage::son[i]);
-	for(int i=1;i<=m;i++) Read(storage::val[i]);
-	for(int i=1;i<=m;i++) Read(storage::able[i]);
-	for(int i=1;i<=m;i++) Read(storage::_count[i]);
+	for(int i=0;i<=m;i++) Read(storage::pa[i]);
+	for(int i=0;i<=m;i++) Read(storage::son[i]);
+	for(int i=0;i<=m;i++) Read(storage::val[i]);
+	for(int i=0;i<=m;i++) Read(storage::able[i]);
+	for(int i=0;i<=m;i++) Read(storage::_count[i]);
 }
 void save()
 {
 	const int m=maxn-1;
 	Out(storage::count); Line();
-	for(int i=1;i<=m;i++) Out(storage::pa[i]); Line();
-	for(int i=1;i<=m;i++) Out(storage::son[i]); Line();
-	for(int i=1;i<=m;i++) Out(storage::val[i]); Line();
-	for(int i=1;i<=m;i++) Out(storage::able[i]); Line();
-	for(int i=1;i<=m;i++) Out(storage::_count[i]); Line();
+	for(int i=0;i<=m;i++) Out(storage::pa[i]); Line();
+	for(int i=0;i<=m;i++) Out(storage::son[i]); Line();
+	for(int i=0;i<=m;i++) Out(storage::val[i]); Line();
+	for(int i=0;i<=m;i++) Out(storage::able[i]); Line();
+	for(int i=0;i<=m;i++) Out(storage::_count[i]); Line();
 }
 
 void init()
@@ -167,20 +167,23 @@ int main()
 	init();
 	srand(0);
 	int now=0;
-	int ct;
+	int ct,chs;
 	while(cin>>ct && ct){
 		if( storage::son_count(now)==0 ){
 			storage::add(now, ct);
+			cerr <<"add "<<" "<<now<<" "<<ct<<endl;
 		}else{
 			if( storage::son_count(now)!=ct ){
 				cerr<<"Error : node count not fit to former data. "<<endl;
+				release();
 				abort();
 			}
 		}
 		++storage::val[now];
-		now=storage::select_son(now);
-		cout<<now<<endl;
-		fprintf(flog," %3d",now);
+		chs=storage::select_son(now);
+		cout<<chs<<endl;
+		fprintf(flog," %3d",chs);
+		now=storage::getson(now, chs);
 	}
 	++storage::val[now];
 	storage::disable(now);
