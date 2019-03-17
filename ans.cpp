@@ -77,9 +77,9 @@ namespace storage{
 			s=son[p]+i;
 			if(able[s]) _availables[_availables_count++]=s;
 		}
-		cerr <<"available count"<<" "<<_availables_count<<endl;
-		for(int i=0;i<_availables_count;++i) cerr<<" "<<_availables[i];
-		cerr<<endl;
+		// cerr <<"available count"<<" "<<_availables_count<<endl;
+		// for(int i=0;i<_availables_count;++i) cerr<<" "<<_availables[i];
+		// cerr<<endl;
 		return _availables_count;
 	}
 	
@@ -171,7 +171,7 @@ int main()
 	while(cin>>ct && ct){
 		if( storage::son_count(now)==0 ){
 			storage::add(now, ct);
-			cerr <<"add "<<" "<<now<<" "<<ct<<endl;
+			// cerr <<"add "<<" "<<now<<" "<<ct<<endl;
 		}else{
 			if( storage::son_count(now)!=ct ){
 				cerr<<"Error : node count not fit to former data. "<<endl;
