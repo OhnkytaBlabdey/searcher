@@ -9,12 +9,15 @@ using namespace std;
 const int maxn=0x80000;
 
 namespace storage{
-	int pa[maxn];
-	int son[maxn];
-	int val[maxn];
-	int able[maxn];
-	int _count[maxn];
+	int pa[maxn];// parent node
+	int son[maxn];// first son node
+	int val[maxn];// reserved
+	int able[maxn];// how many sons are available
+	int _count[maxn];// p 's sons's count
 	int count;// always point to null
+	
+	int _availables[maxn];// buffer for result
+	int _availables_count;// count + 1
 
 	inline void init()
 	{
@@ -65,14 +68,30 @@ namespace storage{
 		return _count[p];
 	}
 	
+	inline int get_available_sons(int p)
+	{
+		int s;
+		_availables_count=0;
+		for(int i=0;i<_count[p];++i){
+			s=sons[p]+i;
+			if(able[s]) _availables[_availables_count++]=s;
+		}
+		return _availables_count;
+	}
+	
 	int select_son(int p)
 	{
-		int ct=_count[p];
-		if(ct<1){
+		if(!get_available_sons(p)){
 			cerr<<"Error : no available node to select. "<<endl;
 			abort();
 		}
-		int res=son[p];
+		++val[p];
+		int res=_availables[0];
+		int s;
+		for(int i=0;i<_availables_count;++i){
+			s=_availables[i];
+			if(val[s]>val[res]) res=s;
+		}
 		return res;
 	}
 	
