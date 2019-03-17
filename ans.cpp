@@ -45,12 +45,8 @@ namespace storage{
 		able[x]=0;
 		int p=pa[x];
 		if(p==0) return;
-		if(able[x]==1 || able[x]==0){
-			able[x]=0;
-			disable(p);
-			return;
-		}
-		able[x]--;
+		able[p]--;
+		if(able[p]==0) disable(p);
 	}
 	
 	// return k th son's index
