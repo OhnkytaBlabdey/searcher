@@ -168,7 +168,7 @@ void release()
 int main()
 {
 	init();
-	srand(0);
+	srand(time(0));
 	int now=0;
 	int ct,chs;
 	while(cin>>ct && ct){
