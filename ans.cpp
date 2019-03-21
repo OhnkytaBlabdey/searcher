@@ -126,7 +126,7 @@ namespace storage{
 		}
 		cerr<<endl;
 		int ct=roulette[_availables_count-1];
-		int choice= rand()%ct;
+		int choice= (double)rand()/RAND_MAX*ct;
 		cerr<<"ct "<<ct<<" choice "<<choice<<endl;
 		for(int i=0;i<_availables_count;++i){
 			if(roulette[i]>=choice){
