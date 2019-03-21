@@ -16,6 +16,7 @@ namespace storage{
 	int _count[maxn];// p 's sons's count
 	int count;// always point to null
 	
+	int roulette[256];
 	int _availables[maxn];// buffer for result
 	int _availables_count;// count + 1
 
@@ -38,6 +39,12 @@ namespace storage{
 			pa[count]=p;
 			able[count++]=-1;
 		}
+		val[p]=ct;
+		int x=pa[p];
+		do{
+			val[x]+=ct;
+			x=pa[x];
+		}while(x);
 	}
 	
 	inline void disable(int x)
@@ -92,7 +99,8 @@ namespace storage{
 		}
 		int res;
 		
-		res=_availables[(rand()+_availables_count)%_availables_count];
+		/* /// random select a son
+		res=_availables[(rand()+_availables_count)%_availables_count]; */
 		/* /// minimize val[s]
 		res=_availables[0];
 		int s;
@@ -100,6 +108,27 @@ namespace storage{
 			s=_availables[i];
 			if(val[s]>val[res]) res=s;
 		} */
+		
+		/// select son equally by their decendents
+		if(_availables_count>256){
+			cerr<<"Error : too many choices to select."<<endl;
+			abort();
+		}
+		
+		for(int i=0;i<_availables_count;++i){
+			if(!i) roulette[i]=val[ _availables[i] ];
+			else {
+				roulette[i]=roulette[i-1] + val[ _availables[i] ];
+			}
+		}
+		int ct=roulette[_availables_count-1];
+		int choice= (1.0*rand())/RAND_MAX*ct;
+		for(int i=0;i<_availables_count;++i){
+			if(roulette[i]>=choice){
+				res=_availables[i];
+				break;
+			}
+		}
 		return res-son[p]+1;
 	}
 	
@@ -184,7 +213,7 @@ int main()
 				abort();
 			}
 		}
-		++storage::val[now];
+		/* ++storage::val[now]; */
 		chs=storage::select_son(now);
 		cout<<chs<<endl;
 	#ifdef lll
@@ -193,7 +222,7 @@ int main()
 		fprintf(flog," %3d",chs);
 		now=storage::getson(now, chs);
 	}
-	++storage::val[now];
+	/* ++storage::val[now]; */
 	storage::disable(now);
 	release();
 	return 0;
