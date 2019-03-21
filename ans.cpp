@@ -16,7 +16,7 @@ namespace storage{
 	int _count[maxn];// p 's sons's count
 	int count;// always point to null
 	
-	int roulette[256];
+	double roulette[256];
 	int _availables[maxn];// buffer for result
 	int _availables_count;// count + 1
 
@@ -98,7 +98,7 @@ namespace storage{
 			cerr<<"Error : no available node to select. "<<endl;
 			abort();
 		}
-		int res;
+		int res=_availables[0];
 		
 		/* /// random select a son
 		res=_availables[(rand()+_availables_count)%_availables_count]; */
@@ -116,17 +116,22 @@ namespace storage{
 			abort();
 		}
 		
-		cerr<<"roulette ";
+		int ct=0;
+		for(int i=0;i<_availables_count;++i) ct+=val[ _availables[i] ];
+		double sum=0;
 		for(int i=0;i<_availables_count;++i){
-			if(!i) roulette[i]=val[ _availables[i] ];
-			else {
-				roulette[i]=roulette[i-1] + val[ _availables[i] ];
-			}
-			cerr<<" "<<roulette[i];
+			roulette[i]=1.0-(double) val[ _availables[i] ]/ct;
+			sum += roulette[i];
 		}
+		for(int i=0;i<_availables_count;++i) {
+			roulette[i]/=sum;
+			if(i) roulette[i]+=roulette[i-1];
+		}
+		cerr<<"roulette ";
+		for(int i=0;i<_availables_count;++i) cerr<<" "<<roulette[i];
 		cerr<<endl;
-		int ct=roulette[_availables_count-1];
-		int choice= (double)rand()/RAND_MAX*ct;
+		
+		double choice= (double)rand()/RAND_MAX;
 		cerr<<"ct "<<ct<<" choice "<<choice<<endl;
 		for(int i=0;i<_availables_count;++i){
 			if(roulette[i]>=choice){
