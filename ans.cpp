@@ -9,7 +9,7 @@
 #define lll
 using namespace std;
 const int maxn=0x800;
-const int maxint=2147483647;
+const unsigned maxint=4294967295;
 std::mt19937 generator;
 namespace storage{
 	int pa[maxn];// parent node
