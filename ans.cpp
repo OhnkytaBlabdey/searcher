@@ -37,9 +37,10 @@ namespace storage{
 		_count[p]=ct;
 		for(int i=0;i<ct;++i) {
 			pa[count]=p;
+			val[count]=1;
 			able[count++]=-1;
 		}
-		val[p]=ct;
+		val[p]+=ct;
 		int x=pa[p];
 		do{
 			val[x]+=ct;
@@ -115,14 +116,18 @@ namespace storage{
 			abort();
 		}
 		
+		cerr<<"roulette ";
 		for(int i=0;i<_availables_count;++i){
 			if(!i) roulette[i]=val[ _availables[i] ];
 			else {
 				roulette[i]=roulette[i-1] + val[ _availables[i] ];
 			}
+			cerr<<" "<<roulette[i];
 		}
+		cerr<<endl;
 		int ct=roulette[_availables_count-1];
-		int choice= (1.0*rand())/RAND_MAX*ct;
+		int choice= rand()%ct;
+		cerr<<"ct "<<ct<<" choice "<<choice<<endl;
 		for(int i=0;i<_availables_count;++i){
 			if(roulette[i]>=choice){
 				res=_availables[i];
