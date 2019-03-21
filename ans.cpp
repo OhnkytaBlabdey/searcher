@@ -1,13 +1,16 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-#include <ctime>
+/* #include <ctime> */
 #include <cstring>
+#include <chrono>
+#include <random>
 
 #define lll
 using namespace std;
 const int maxn=0x800;
-
+const int maxint=2147483647;
+std::mt19937 generator;
 namespace storage{
 	int pa[maxn];// parent node
 	int son[maxn];// first son node
@@ -22,6 +25,9 @@ namespace storage{
 
 	inline void init()
 	{
+		// obtain a seed from the system clock:
+		unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+		generator.seed(seed);
 		memset(pa,-1,maxn*sizeof(int));
 		memset(son,0,maxn*sizeof(int));
 		memset(val,0,maxn*sizeof(int));
@@ -131,7 +137,7 @@ namespace storage{
 			for(int i=0;i<_availables_count;++i) cerr<<" "<<roulette[i];
 			cerr<<endl;
 			
-			double choice= (double)rand()/RAND_MAX;
+			double choice= (double)generator()/maxint;
 			cerr<<"ct "<<ct<<" choice "<<choice<<endl;
 			for(int i=0;i<_availables_count;++i){
 				if(roulette[i]>=choice){
@@ -208,7 +214,7 @@ void release()
 int main()
 {
 	init();
-	srand(time(0));
+	/* srand(time(0)); */
 	int now=0;
 	int ct,chs;
 	while(cin>>ct && ct){
