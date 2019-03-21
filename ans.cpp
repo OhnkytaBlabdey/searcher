@@ -115,28 +115,29 @@ namespace storage{
 			cerr<<"Error : too many choices to select."<<endl;
 			abort();
 		}
-		
-		int ct=0;
-		for(int i=0;i<_availables_count;++i) ct+=val[ _availables[i] ];
-		double sum=0;
-		for(int i=0;i<_availables_count;++i){
-			roulette[i]=1.0-(double) val[ _availables[i] ]/ct;
-			sum += roulette[i];
-		}
-		for(int i=0;i<_availables_count;++i) {
-			roulette[i]/=sum;
-			if(i) roulette[i]+=roulette[i-1];
-		}
-		cerr<<"roulette ";
-		for(int i=0;i<_availables_count;++i) cerr<<" "<<roulette[i];
-		cerr<<endl;
-		
-		double choice= (double)rand()/RAND_MAX;
-		cerr<<"ct "<<ct<<" choice "<<choice<<endl;
-		for(int i=0;i<_availables_count;++i){
-			if(roulette[i]>=choice){
-				res=_availables[i];
-				break;
+		else if(_availables_count > 1){
+			int ct=0;
+			for(int i=0;i<_availables_count;++i) ct+=val[ _availables[i] ];
+			double sum=0;
+			for(int i=0;i<_availables_count;++i){
+				roulette[i]=1.0-(double) val[ _availables[i] ]/ct;
+				sum += roulette[i];
+			}
+			for(int i=0;i<_availables_count;++i) {
+				roulette[i]/=sum;
+				if(i) roulette[i]+=roulette[i-1];
+			}
+			cerr<<"roulette ";
+			for(int i=0;i<_availables_count;++i) cerr<<" "<<roulette[i];
+			cerr<<endl;
+			
+			double choice= (double)rand()/RAND_MAX;
+			cerr<<"ct "<<ct<<" choice "<<choice<<endl;
+			for(int i=0;i<_availables_count;++i){
+				if(roulette[i]>=choice){
+					res=_availables[i];
+					break;
+				}
 			}
 		}
 		return res-son[p]+1;
