@@ -31,28 +31,29 @@ while flag:
 	flog = open('log.txt', 'w')
 	fout1 = open('buf1.txt', 'w') # maze -> ans
 	fin1 = open('buf1.txt', 'r') # maze -> ans
+	# ffin1 = open('buf1.txt', 'r') # maze -> ans
 	fout2 = open('buf2.txt', 'w') # ans -> maze
 	fin2 = open('buf2.txt', 'r') # ans -> maze
+	# ffin2 = open('buf2.txt', 'r') # ans -> maze
 	# pm = subprocess.Popen(['maze', 'tree.txt'], stderr = flog, stdout = fout1, stdin = subprocess.PIPE)
 	# pa = subprocess.Popen(['ans'], stdout = subprocess.PIPE, stdin = fin1)
-	pm = subprocess.Popen(['py', 'p1.py'], stderr = flog, stdout = fout2, stdin = fin2)
-	pa = subprocess.Popen(['py', 'p2.py'], stdout = fout1, stdin = fin1)
+	pm = subprocess.Popen(['py', 'p1.py'], stderr = flog, stdout = fout1, stdin = fin2)
+	pa = subprocess.Popen(['py', 'p2.py'], stdout = fout2, stdin = fin1)
 
 	flag1 = True
-	res = None
+
 	while subprocess.Popen.poll(pa)==None :
-		if res == None:
-			# res, _ = pm.communicate(timeout=0.1)
-			res = pm.stdout.readline()
-			print('init query', res)
-		else:
-			res, _ = pm.communicate(res, timeout=0.1)
-			print('query', res)
+		time.sleep(0.25)
+		# res = ffin1.readline()
 		# print('query', res)
-		# res, _ = pa.communicate(res)
-		# res = pa.stdout.readline()
-		res = fin1.readline()
-		print('ans', res)
+		# fout1.write(res)
+		fout1.flush()
+
+		time.sleep(0.25)
+		# res = ffin2.readline()
+		# print('ans', res)
+		# fout2.write(res)
+		fout2.flush()
 
 		print('1 tick')
 		
@@ -72,7 +73,8 @@ while flag:
 				flag = False
 				print('duplication.')
 				break
-			elif '1' in line:
+			# elif '1' in line:
+			elif 'win' in line:
 				# found
 				flag = False
 				print('found.')
