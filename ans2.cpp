@@ -227,7 +227,7 @@ int main()
 		} else {
 			if ( storage::son_count(now) != ct ) {
 				cerr<<"Error : node count not fit to former data. "<<endl;
-				cerr<<son_count(now)<<", "<<ct<<endl;
+				cerr<<storage::son_count(now)<<", "<<ct<<endl;
 				release();
 				abort();
 			}
