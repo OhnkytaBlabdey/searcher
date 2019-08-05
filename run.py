@@ -33,15 +33,28 @@ while flag:
 	fin1 = open('buf1.txt', 'r') # maze -> ans
 	fout2 = open('buf2.txt', 'w') # ans -> maze
 	fin2 = open('buf2.txt', 'r') # ans -> maze
-	pm = subprocess.Popen(['maze', 'tree.txt'], stderr = flog, stdout = fout1, stdin = fin2)
-	pa = subprocess.Popen(['ans'], stdout = fout2, stdin = fin1)
+	# pm = subprocess.Popen(['maze', 'tree.txt'], stderr = flog, stdout = fout1, stdin = subprocess.PIPE)
+	# pa = subprocess.Popen(['ans'], stdout = subprocess.PIPE, stdin = fin1)
+	pm = subprocess.Popen(['py', 'p1.py'], stderr = flog, stdout = fout2, stdin = fin2)
+	pa = subprocess.Popen(['py', 'p2.py'], stdout = fout1, stdin = fin1)
 
 	flag1 = True
+	res = None
 	while subprocess.Popen.poll(pa)==None :
-		time.sleep(0.1)
-		fout1.flush()
-		time.sleep(0.1)
-		fout2.flush()
+		if res == None:
+			# res, _ = pm.communicate(timeout=0.1)
+			res = pm.stdout.readline()
+			print('init query', res)
+		else:
+			res, _ = pm.communicate(res, timeout=0.1)
+			print('query', res)
+		# print('query', res)
+		# res, _ = pa.communicate(res)
+		# res = pa.stdout.readline()
+		res = fin1.readline()
+		print('ans', res)
+
+		print('1 tick')
 		
 	
 	flog.close()
@@ -49,6 +62,7 @@ while flag:
 	fin2.close()
 	fout1.close()
 	fout2.close()
+	print('1 circle finished.')
 
 	with open('log.txt', 'r') as f:
 		line2 = ''
@@ -58,11 +72,11 @@ while flag:
 				flag = False
 				print('duplication.')
 				break
-			elif 'win' in line:
+			elif '1' in line:
 				# found
 				flag = False
 				print('found.')
 				break
 			line2 = line
-			print('failed')
+		print('failed')
 
