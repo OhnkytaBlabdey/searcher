@@ -126,6 +126,9 @@ class Node(object):
 				break
 		del self
 
+	def __str__(self):
+		return '{ ' + ', '.join(str(x) for x in self.childs) + '}'
+
 
 
 root = Node()
@@ -133,9 +136,6 @@ root.addSon(2)
 node = root.getSon(1)
 node.addSon(9)
 node.getSon(8).addSon(0)
-# node.getSon(8).destroy()
-# node.getSon(9)
 print(node.countDescendant())
 print(root.countDescendant())
-# node.destroy()
-# root.getSon(2)
+print(root)
