@@ -35,10 +35,10 @@ while flag:
 	fout2 = open('buf2.txt', 'w') # ans -> maze
 	fin2 = open('buf2.txt', 'r') # ans -> maze
 	# ffin2 = open('buf2.txt', 'r') # ans -> maze
-	# pm = subprocess.Popen(['maze', 'tree.txt'], stderr = flog, stdout = fout1, stdin = subprocess.PIPE)
-	# pa = subprocess.Popen(['ans'], stdout = subprocess.PIPE, stdin = fin1)
-	pm = subprocess.Popen(['py', 'p1.py'], stderr = flog, stdout = fout1, stdin = fin2)
-	pa = subprocess.Popen(['py', 'p2.py'], stdout = fout2, stdin = fin1)
+	pm = subprocess.Popen(['maze', 'tree.txt'], stderr = flog, stdout = fout1, stdin = fin2)
+	pa = subprocess.Popen(['ans'], stdout = fout2, stdin = fin1)
+	# pm = subprocess.Popen(['py', 'p1.py'], stderr = flog, stdout = fout1, stdin = fin2)
+	# pa = subprocess.Popen(['py', 'p2.py'], stdout = fout2, stdin = fin1)
 
 	flag1 = True
 
